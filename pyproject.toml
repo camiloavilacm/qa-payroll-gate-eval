@@ -7,7 +7,7 @@ version = "1.4.0"
 requires-python = ">=3.11"
 dependencies = ["boto3>=1.35,<2","jsonschema[format]>=4.20,<5"]
 [project.optional-dependencies]
-dev = ["ruff","mypy","pytest"]
+dev = ["ruff==0.15.9","mypy==1.18.2","pytest==9.2.0"]
 [tool.setuptools.package-data]
 payroll_gate = ["schemas/*.json"]
 [tool.mypy]

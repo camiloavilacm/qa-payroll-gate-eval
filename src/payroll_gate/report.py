@@ -87,6 +87,7 @@ def detail(r: Data) -> str:
     calls = " → ".join(f"{t['tool']}({t['id']}) [{t['outcome']}]" for t in r["tools"])
     return (
         f"{'PASS' if r['passed'] else 'FAIL'} · {r['predicted']} · {calls} · {', '.join(r['reasons'])}"
+        + (f" · {r['parse_detail']}" if r.get("parse_detail") else "")
         + (f" · missing {r['missing']}" if r["missing"] else "")
     )
 

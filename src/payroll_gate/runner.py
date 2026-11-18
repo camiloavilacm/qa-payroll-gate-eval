@@ -12,6 +12,7 @@ from typing import Any, Callable
 
 from .gateway import TOOLS, Data, Gateway
 from .graders import grade
+from .diagnostics import parse_shape
 
 STOPS = dict(
     max_tokens="MAX_TOKENS",
@@ -121,4 +122,7 @@ def trial(call: Callable[..., Data], model: str, prompt: str, scenario: Data) ->
             reasons.append("TURN_BUDGET")
         if reasons:
             break
-    return dict(**grade(gateway, raw, reasons), metrics=metrics)
+    row = grade(gateway, raw, reasons)
+    if "PARSE_ERROR" in row["reasons"]:
+        row["parse_detail"] = parse_shape(raw)
+    return dict(**row, metrics=metrics)

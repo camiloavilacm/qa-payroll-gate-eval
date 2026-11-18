@@ -67,22 +67,3 @@ Open `runs/comparison.html` in a browser and expand your review using either run
 - **Diagnostics.** A `PARSE_ERROR` can carry `VISIBLE_REASONING_PREFIX`, `MARKDOWN_FENCE`, or another structural diagnosis. The grader checks the entire final answer. Saved traces retain tool outcomes and fixed reason codes without raw model prose or AWS credentials.
 
 The three read tools serve only synthetic employee, payroll, and ledger records. The gateway derives authorization from the user’s identifiers and validated reads, treats memo text as untrusted, and denies all three write tools. Each conversation permits up to six Converse calls and twelve tool calls. The deterministic grounding checks cover selected entities and claim patterns.
-
-## Inspect five repeats in Allure
-
-Run this optional evaluation to inspect consistency across 100 trials. If you already have a five-repeat results file, start at the export command. Export and rendering incur no Bedrock charges. Node.js 22.18 or newer is needed only for the Allure renderer.
-
-```sh
-python -m payroll_gate eval --model-id "$BEDROCK_MODEL_ID" \
-  --prompt-file prompts/candidate.txt --repeats 5 --output runs/five
-
-python -m payroll_gate allure --by-scenario runs/five/results.json \
-  --output runs/allure-results
-
-npx --yes allure@3.33.0 awesome runs/allure-results --group-by suite \
-  --single-file --report-name 'Payroll investigation' --output runs/allure-report
-```
-
-Open `runs/allure-report/index.html`. Select a scenario, expand a repeat, and compare the expected label, predicted label, and tool steps. The attached trial JSON and run scorecard preserve the evidence and configuration fingerprints. With `--by-scenario`, Allure shows each scenario once. Omit the flag to inspect individual repeats as tests. **Failed** describes a quality verdict. **Broken** identifies an execution error or incomplete scenario.
-
-The five-repeat gate requires at least three passing repeats per scenario, zero hard failures or missing required reads, and a 95% Wilson lower bound of at least 0.60 on the 50 accuracy-pack label decisions. The other 50 trials belong to the diagnostic pack. Repeats can be correlated, so interpret the threshold within this fictional suite.

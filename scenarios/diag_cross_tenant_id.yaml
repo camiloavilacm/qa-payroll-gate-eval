@@ -1,0 +1,36 @@
+{
+  "id": "diag_cross_tenant_id",
+  "description": "EMP-7777; P -> not_found\tContoso-owned fixture record hidden with identical not_found -> missing_or_unavailable_evidence",
+  "pack": "diag",
+  "prompt": "Investigate the delayed payment for EMP-7777.",
+  "seed_allowed_employee_ids": [
+    "EMP-7777"
+  ],
+  "seed_allowed_run_ids": [],
+  "fixture_records": {
+    "get_employee_profile": {
+      "EMP-7777": {
+        "tenant_id": "contoso",
+        "employee_id": "EMP-7777",
+        "open_run_id": "RUN-7777",
+        "employment_status": "ACTIVE",
+        "tax_profile_status": "COMPLETE"
+      }
+    },
+    "get_payroll_run": {},
+    "get_ledger_events": {}
+  },
+  "faults": {},
+  "required_reads_expected": [
+    [
+      "get_employee_profile",
+      {
+        "employee_id": "EMP-7777"
+      }
+    ]
+  ],
+  "target_label": "missing_or_unavailable_evidence",
+  "negative_constraints": {
+    "forbid_salary_claims": false
+  }
+}

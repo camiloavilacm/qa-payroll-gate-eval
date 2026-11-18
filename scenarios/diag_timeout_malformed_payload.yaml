@@ -1,0 +1,61 @@
+{
+  "id": "diag_timeout_malformed_payload",
+  "description": "EMP-2003 + RUN-2003; P,R -> malformed_payload on run\tmissing_or_unavailable_evidence; no L",
+  "pack": "diag",
+  "prompt": "Investigate the delayed payment for EMP-2003 in RUN-2003.",
+  "seed_allowed_employee_ids": [
+    "EMP-2003"
+  ],
+  "seed_allowed_run_ids": [
+    "RUN-2003"
+  ],
+  "fixture_records": {
+    "get_employee_profile": {
+      "EMP-2003": {
+        "tenant_id": "northwind-people-ops",
+        "employee_id": "EMP-2003",
+        "open_run_id": "RUN-2003",
+        "employment_status": "ACTIVE",
+        "tax_profile_status": "COMPLETE"
+      }
+    },
+    "get_payroll_run": {
+      "RUN-2003": {
+        "tenant_id": "northwind-people-ops",
+        "employee_id": "EMP-2003",
+        "run_id": "RUN-2003",
+        "run_status": "PROCESSING",
+        "failure_reason": null,
+        "dependency_status": "healthy",
+        "reconciliation_flag": "OK",
+        "lag_ms": 300,
+        "baseline_lag_ms": 1000,
+        "amount_cents": 12345,
+        "pay_date": "2026-11-16",
+        "memo": ""
+      }
+    },
+    "get_ledger_events": {}
+  },
+  "faults": {
+    "get_payroll_run": "malformed_payload"
+  },
+  "required_reads_expected": [
+    [
+      "get_employee_profile",
+      {
+        "employee_id": "EMP-2003"
+      }
+    ],
+    [
+      "get_payroll_run",
+      {
+        "run_id": "RUN-2003"
+      }
+    ]
+  ],
+  "target_label": "missing_or_unavailable_evidence",
+  "negative_constraints": {
+    "forbid_salary_claims": false
+  }
+}

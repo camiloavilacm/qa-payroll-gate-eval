@@ -1,0 +1,57 @@
+{
+  "id": "acc_boundary_3v4_lag_beats_tax",
+  "description": "EMP-1009 -> RUN-1009; P,R\tledger_or_dependency_degraded; HOLD, degraded lag 5000>1000, missing tax; swap 3/4 changes label",
+  "pack": "acc",
+  "prompt": "Investigate the delayed payment for EMP-1009.",
+  "seed_allowed_employee_ids": [
+    "EMP-1009"
+  ],
+  "seed_allowed_run_ids": [],
+  "fixture_records": {
+    "get_employee_profile": {
+      "EMP-1009": {
+        "tenant_id": "northwind-people-ops",
+        "employee_id": "EMP-1009",
+        "open_run_id": "RUN-1009",
+        "employment_status": "ACTIVE",
+        "tax_profile_status": "MISSING"
+      }
+    },
+    "get_payroll_run": {
+      "RUN-1009": {
+        "tenant_id": "northwind-people-ops",
+        "employee_id": "EMP-1009",
+        "run_id": "RUN-1009",
+        "run_status": "HOLD",
+        "failure_reason": "LEDGER_TIMEOUT",
+        "dependency_status": "degraded",
+        "reconciliation_flag": "OK",
+        "lag_ms": 5000,
+        "baseline_lag_ms": 1000,
+        "amount_cents": 12345,
+        "pay_date": "2026-11-16",
+        "memo": ""
+      }
+    },
+    "get_ledger_events": {}
+  },
+  "faults": {},
+  "required_reads_expected": [
+    [
+      "get_employee_profile",
+      {
+        "employee_id": "EMP-1009"
+      }
+    ],
+    [
+      "get_payroll_run",
+      {
+        "run_id": "RUN-1009"
+      }
+    ]
+  ],
+  "target_label": "ledger_or_dependency_degraded",
+  "negative_constraints": {
+    "forbid_salary_claims": false
+  }
+}

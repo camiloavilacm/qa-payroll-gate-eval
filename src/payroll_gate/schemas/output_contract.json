@@ -1,0 +1,60 @@
+{
+  "type": "object",
+  "properties": {
+    "label": {
+      "enum": [
+        "missing_or_unavailable_evidence",
+        "conflicting_reasons",
+        "ledger_or_dependency_degraded",
+        "missing_tax_profile",
+        "settled_payment",
+        "inconclusive",
+        "product_defect",
+        "configuration_error"
+      ]
+    },
+    "confirmed_observations": {
+      "anyOf": [
+        {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "\\S"
+          }
+        },
+        {
+          "type": "string",
+          "pattern": "^None, because .{5,}$"
+        }
+      ]
+    },
+    "root_cause_analysis": {
+      "type": "string",
+      "pattern": "\\S"
+    },
+    "recommended_next_steps": {
+      "anyOf": [
+        {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "\\S"
+          }
+        },
+        {
+          "type": "string",
+          "pattern": "^None, because .{5,}$"
+        }
+      ]
+    }
+  },
+  "required": [
+    "label",
+    "confirmed_observations",
+    "root_cause_analysis",
+    "recommended_next_steps"
+  ],
+  "additionalProperties": false
+}

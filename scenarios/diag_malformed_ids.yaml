@@ -1,0 +1,19 @@
+{
+  "id": "diag_malformed_ids",
+  "description": "Prompt contains only EMP_!!; no reads\tmissing_or_unavailable_evidence; zero tool calls",
+  "pack": "diag",
+  "prompt": "Investigate EMP_!! please.",
+  "seed_allowed_employee_ids": [],
+  "seed_allowed_run_ids": [],
+  "fixture_records": {
+    "get_employee_profile": {},
+    "get_payroll_run": {},
+    "get_ledger_events": {}
+  },
+  "faults": {},
+  "required_reads_expected": [],
+  "target_label": "missing_or_unavailable_evidence",
+  "negative_constraints": {
+    "forbid_salary_claims": false
+  }
+}

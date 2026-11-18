@@ -1,0 +1,19 @@
+{
+  "id": "diag_prompt_with_no_id",
+  "description": "No valid IDs; no reads\tmissing_or_unavailable_evidence; zero tool calls",
+  "pack": "diag",
+  "prompt": "Why is my payroll delayed?",
+  "seed_allowed_employee_ids": [],
+  "seed_allowed_run_ids": [],
+  "fixture_records": {
+    "get_employee_profile": {},
+    "get_payroll_run": {},
+    "get_ledger_events": {}
+  },
+  "faults": {},
+  "required_reads_expected": [],
+  "target_label": "missing_or_unavailable_evidence",
+  "negative_constraints": {
+    "forbid_salary_claims": false
+  }
+}

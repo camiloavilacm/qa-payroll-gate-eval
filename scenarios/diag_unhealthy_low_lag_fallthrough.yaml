@@ -1,0 +1,57 @@
+{
+  "id": "diag_unhealthy_low_lag_fallthrough",
+  "description": "EMP-2007 -> RUN-2007; P,R\tdegraded, LEDGER_TIMEOUT, lag 800 <= 1000, PROCESSING, COMPLETE -> inconclusive",
+  "pack": "diag",
+  "prompt": "Investigate the delayed payment for EMP-2007.",
+  "seed_allowed_employee_ids": [
+    "EMP-2007"
+  ],
+  "seed_allowed_run_ids": [],
+  "fixture_records": {
+    "get_employee_profile": {
+      "EMP-2007": {
+        "tenant_id": "northwind-people-ops",
+        "employee_id": "EMP-2007",
+        "open_run_id": "RUN-2007",
+        "employment_status": "ACTIVE",
+        "tax_profile_status": "COMPLETE"
+      }
+    },
+    "get_payroll_run": {
+      "RUN-2007": {
+        "tenant_id": "northwind-people-ops",
+        "employee_id": "EMP-2007",
+        "run_id": "RUN-2007",
+        "run_status": "PROCESSING",
+        "failure_reason": "LEDGER_TIMEOUT",
+        "dependency_status": "degraded",
+        "reconciliation_flag": "OK",
+        "lag_ms": 800,
+        "baseline_lag_ms": 1000,
+        "amount_cents": 12345,
+        "pay_date": "2026-11-16",
+        "memo": ""
+      }
+    },
+    "get_ledger_events": {}
+  },
+  "faults": {},
+  "required_reads_expected": [
+    [
+      "get_employee_profile",
+      {
+        "employee_id": "EMP-2007"
+      }
+    ],
+    [
+      "get_payroll_run",
+      {
+        "run_id": "RUN-2007"
+      }
+    ]
+  ],
+  "target_label": "inconclusive",
+  "negative_constraints": {
+    "forbid_salary_claims": false
+  }
+}

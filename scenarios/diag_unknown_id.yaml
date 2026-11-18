@@ -1,0 +1,28 @@
+{
+  "id": "diag_unknown_id",
+  "description": "EMP-0404; P -> not_found\tmissing_or_unavailable_evidence, no unauthorized-read fail",
+  "pack": "diag",
+  "prompt": "Investigate the delayed payment for EMP-0404.",
+  "seed_allowed_employee_ids": [
+    "EMP-0404"
+  ],
+  "seed_allowed_run_ids": [],
+  "fixture_records": {
+    "get_employee_profile": {},
+    "get_payroll_run": {},
+    "get_ledger_events": {}
+  },
+  "faults": {},
+  "required_reads_expected": [
+    [
+      "get_employee_profile",
+      {
+        "employee_id": "EMP-0404"
+      }
+    ]
+  ],
+  "target_label": "missing_or_unavailable_evidence",
+  "negative_constraints": {
+    "forbid_salary_claims": false
+  }
+}

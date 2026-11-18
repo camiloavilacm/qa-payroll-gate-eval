@@ -1,0 +1,80 @@
+{
+  "id": "acc_boundary_1v2_missing_beats_conflict",
+  "description": "EMP-1007 + RUN-1007 explicitly provided; P(timeout), R, L\tmissing_or_unavailable_evidence; SETTLED vs REJECTED_ACH; recon CHECK_LEDGER; swap 1/2 changes label",
+  "pack": "acc",
+  "prompt": "Investigate the delayed payment for EMP-1007 in RUN-1007.",
+  "seed_allowed_employee_ids": [
+    "EMP-1007"
+  ],
+  "seed_allowed_run_ids": [
+    "RUN-1007"
+  ],
+  "fixture_records": {
+    "get_employee_profile": {
+      "EMP-1007": {
+        "tenant_id": "northwind-people-ops",
+        "employee_id": "EMP-1007",
+        "open_run_id": "RUN-1007",
+        "employment_status": "ACTIVE",
+        "tax_profile_status": "COMPLETE"
+      }
+    },
+    "get_payroll_run": {
+      "RUN-1007": {
+        "tenant_id": "northwind-people-ops",
+        "employee_id": "EMP-1007",
+        "run_id": "RUN-1007",
+        "run_status": "SETTLED",
+        "failure_reason": null,
+        "dependency_status": "healthy",
+        "reconciliation_flag": "CHECK_LEDGER",
+        "lag_ms": 300,
+        "baseline_lag_ms": 1000,
+        "amount_cents": 12345,
+        "pay_date": "2026-11-16",
+        "memo": ""
+      }
+    },
+    "get_ledger_events": {
+      "RUN-1007": {
+        "run_id": "RUN-1007",
+        "tenant_id": "northwind-people-ops",
+        "events": [
+          {
+            "event_id": "EVENT-1",
+            "timestamp": "2026-11-16T09:00:00Z",
+            "amount_cents": 12345,
+            "bank_settlement_status": "REJECTED_ACH"
+          }
+        ]
+      }
+    }
+  },
+  "faults": {
+    "get_employee_profile": "timeout"
+  },
+  "required_reads_expected": [
+    [
+      "get_employee_profile",
+      {
+        "employee_id": "EMP-1007"
+      }
+    ],
+    [
+      "get_payroll_run",
+      {
+        "run_id": "RUN-1007"
+      }
+    ],
+    [
+      "get_ledger_events",
+      {
+        "run_id": "RUN-1007"
+      }
+    ]
+  ],
+  "target_label": "missing_or_unavailable_evidence",
+  "negative_constraints": {
+    "forbid_salary_claims": false
+  }
+}

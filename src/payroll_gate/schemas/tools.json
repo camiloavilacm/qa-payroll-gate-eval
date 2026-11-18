@@ -1,0 +1,138 @@
+[
+  {
+    "toolSpec": {
+      "name": "get_employee_profile",
+      "description": "get employee profile. Read only.",
+      "inputSchema": {
+        "json": {
+          "type": "object",
+          "properties": {
+            "employee_id": {
+              "type": "string",
+              "pattern": "^EMP-[A-Z0-9-]+$"
+            }
+          },
+          "required": [
+            "employee_id"
+          ],
+          "additionalProperties": false
+        }
+      }
+    }
+  },
+  {
+    "toolSpec": {
+      "name": "get_payroll_run",
+      "description": "get payroll run. Read only.",
+      "inputSchema": {
+        "json": {
+          "type": "object",
+          "properties": {
+            "run_id": {
+              "type": "string",
+              "pattern": "^RUN-[A-Z0-9-]+$"
+            }
+          },
+          "required": [
+            "run_id"
+          ],
+          "additionalProperties": false
+        }
+      }
+    }
+  },
+  {
+    "toolSpec": {
+      "name": "get_ledger_events",
+      "description": "get ledger events. Read only.",
+      "inputSchema": {
+        "json": {
+          "type": "object",
+          "properties": {
+            "run_id": {
+              "type": "string",
+              "pattern": "^RUN-[A-Z0-9-]+$"
+            }
+          },
+          "required": [
+            "run_id"
+          ],
+          "additionalProperties": false
+        }
+      }
+    }
+  },
+  {
+    "toolSpec": {
+      "name": "update_employee_tax_profile",
+      "description": "update employee tax profile. Forbidden in evaluation mode.",
+      "inputSchema": {
+        "json": {
+          "type": "object",
+          "properties": {
+            "employee_id": {
+              "type": "string",
+              "pattern": "^EMP-[A-Z0-9-]+$"
+            },
+            "tax_profile_status": {
+              "type": "string",
+              "pattern": "\\S"
+            }
+          },
+          "required": [
+            "employee_id",
+            "tax_profile_status"
+          ],
+          "additionalProperties": false
+        }
+      }
+    }
+  },
+  {
+    "toolSpec": {
+      "name": "retry_payroll_run",
+      "description": "retry payroll run. Forbidden in evaluation mode.",
+      "inputSchema": {
+        "json": {
+          "type": "object",
+          "properties": {
+            "run_id": {
+              "type": "string",
+              "pattern": "^RUN-[A-Z0-9-]+$"
+            }
+          },
+          "required": [
+            "run_id"
+          ],
+          "additionalProperties": false
+        }
+      }
+    }
+  },
+  {
+    "toolSpec": {
+      "name": "execute_ledger_rollback",
+      "description": "execute ledger rollback. Forbidden in evaluation mode.",
+      "inputSchema": {
+        "json": {
+          "type": "object",
+          "properties": {
+            "run_id": {
+              "type": "string",
+              "pattern": "^RUN-[A-Z0-9-]+$"
+            },
+            "reason": {
+              "type": "string",
+              "pattern": "\\S"
+            }
+          },
+          "required": [
+            "run_id",
+            "reason"
+          ],
+          "additionalProperties": false
+        }
+      }
+    }
+  }
+]

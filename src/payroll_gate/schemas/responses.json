@@ -1,0 +1,199 @@
+{
+  "get_employee_profile": {
+    "type": "object",
+    "properties": {
+      "employee_id": {
+        "type": "string",
+        "pattern": "^EMP-[A-Z0-9-]+$"
+      },
+      "tenant_id": {
+        "type": "string",
+        "minLength": 1
+      },
+      "employment_status": {
+        "enum": [
+          "ACTIVE",
+          "TERMINATED"
+        ]
+      },
+      "tax_profile_status": {
+        "enum": [
+          "COMPLETE",
+          "MISSING",
+          "INCOMPLETE"
+        ]
+      },
+      "open_run_id": {
+        "anyOf": [
+          {
+            "type": "string",
+            "pattern": "^RUN-[A-Z0-9-]+$"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "required": [
+      "employee_id",
+      "tenant_id",
+      "employment_status",
+      "tax_profile_status",
+      "open_run_id"
+    ],
+    "additionalProperties": false
+  },
+  "get_payroll_run": {
+    "type": "object",
+    "properties": {
+      "run_id": {
+        "type": "string",
+        "pattern": "^RUN-[A-Z0-9-]+$"
+      },
+      "employee_id": {
+        "type": "string",
+        "pattern": "^EMP-[A-Z0-9-]+$"
+      },
+      "tenant_id": {
+        "type": "string",
+        "minLength": 1
+      },
+      "run_status": {
+        "enum": [
+          "SETTLED",
+          "HOLD",
+          "PENDING",
+          "PROCESSING",
+          "FAILED"
+        ]
+      },
+      "failure_reason": {
+        "anyOf": [
+          {
+            "type": "string",
+            "pattern": "\\S"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "dependency_status": {
+        "enum": [
+          "healthy",
+          "degraded",
+          "unavailable"
+        ]
+      },
+      "reconciliation_flag": {
+        "enum": [
+          "OK",
+          "CHECK_LEDGER"
+        ]
+      },
+      "lag_ms": {
+        "anyOf": [
+          {
+            "type": "integer",
+            "minimum": 0
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "baseline_lag_ms": {
+        "anyOf": [
+          {
+            "type": "integer",
+            "minimum": 0
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "amount_cents": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "pay_date": {
+        "type": "string",
+        "format": "date"
+      },
+      "memo": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "run_id",
+      "employee_id",
+      "tenant_id",
+      "run_status",
+      "failure_reason",
+      "dependency_status",
+      "reconciliation_flag",
+      "lag_ms",
+      "baseline_lag_ms",
+      "amount_cents",
+      "pay_date",
+      "memo"
+    ],
+    "additionalProperties": false
+  },
+  "get_ledger_events": {
+    "type": "object",
+    "properties": {
+      "run_id": {
+        "type": "string",
+        "pattern": "^RUN-[A-Z0-9-]+$"
+      },
+      "tenant_id": {
+        "type": "string",
+        "minLength": 1
+      },
+      "events": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "event_id": {
+              "type": "string",
+              "pattern": "\\S"
+            },
+            "bank_settlement_status": {
+              "enum": [
+                "SETTLED_ACH",
+                "REJECTED_ACH",
+                "PENDING_ACH"
+              ]
+            },
+            "amount_cents": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "timestamp": {
+              "type": "string",
+              "format": "date-time",
+              "pattern": "Z$"
+            }
+          },
+          "required": [
+            "event_id",
+            "bank_settlement_status",
+            "amount_cents",
+            "timestamp"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    "required": [
+      "run_id",
+      "tenant_id",
+      "events"
+    ],
+    "additionalProperties": false
+  }
+}

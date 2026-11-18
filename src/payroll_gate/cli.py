@@ -10,6 +10,7 @@ from pathlib import Path
 
 from botocore.exceptions import BotoCoreError, ClientError
 
+from .allure import export
 from .gateway import RESP, SCHEMAS, Data, valid
 from .report import comparison, write
 from .runner import live_client, trial
@@ -51,9 +52,20 @@ def main() -> int:
     cmp = sub.add_parser("compare")
     cmp.add_argument("baseline", type=Path)
     cmp.add_argument("candidate", type=Path)
-    for command in (cmp, ev):
+    allure = sub.add_parser("allure", help="Export saved evaluations for Allure Report")
+    allure.add_argument(
+        "--by-scenario",
+        action="store_true",
+        help="Show each scenario once, with repeat-level evidence as steps",
+    )
+    allure.add_argument("results", type=Path, nargs="+")
+    for command in (cmp, ev, allure):
         command.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
+    if args.command == "allure":
+        export(args.results, args.output, by_scenario=args.by_scenario)
+        print(args.output)
+        return 0
     if args.command == "compare":
         rendered = comparison(
             json.loads(args.baseline.read_bytes()),
